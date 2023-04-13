@@ -4,6 +4,31 @@
 
 ## Assets
 
+### Announcement bar
+
+#### Installation
+
+1. Copy and paste 2 files `custom-announcement-bar.js` and `custom-announcement-bar.css` in this repo to `assets` folder in your Theme
+
+2. Place the script in `layout/theme.liquid` before the closing `<head>` tag
+
+```html
+<script
+  src="{{ 'custom-announcement-bar.js' | asset_url }}"
+  defer="defer"
+></script>
+```
+
+3. Place these style in `layout/theme.liquid` before the closing `</body>` tag
+
+```liquid
+{{ 'custom-announcement-bar.css' | asset_url | stylesheet_tag }}
+```
+
+#### Usage
+
+1. The script automatically injects "X" (close) button into the Announcement Bar section
+
 ### Wishlist
 
 #### Installation
