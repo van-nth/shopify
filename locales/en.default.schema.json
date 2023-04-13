@@ -2,6 +2,9 @@
   "sections": {
     "template": {
       "name": "Template"
+    },
+    "template-404": {
+      "name": "Template 404"
     }
   }
 }

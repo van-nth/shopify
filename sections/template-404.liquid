@@ -1,0 +1,24 @@
+<div class="template-404">
+  <p>
+    {{ 'templates.404.subtext' | t }}
+  </p>
+
+  <h1 class="title">
+    {{ 'templates.404.title' | t }}
+  </h1>
+</div>
+
+{% stylesheet %}
+.template-404 {}
+{% endstylesheet %}
+
+{% javascript %}
+console.log("template-404")
+{% endjavascript %}
+
+{% schema %}
+{
+  "class": "template",
+  "name": "t:sections.template-404.name"
+}
+{% endschema %}
