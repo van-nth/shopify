@@ -1,7 +1,7 @@
 # Shopify
 
 > Shopify scripts, blocks, snippets
-> Note: work on Dawn Theme version 9.0.0
+_ _Note: work on Dawn Theme version 9.0.0_ _
 
 
 ## Announcement bar
