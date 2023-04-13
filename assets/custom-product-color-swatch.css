@@ -1,5 +1,5 @@
 .product .product-form__input input[type="radio"] + .color-swatch {
-  border: 3px solid #f1f1f1; 
+  border: 3px solid #f1f1f1;
   width: 40px;
   height: 40px;
   padding: 0;
@@ -7,7 +7,7 @@
 
 .product .product-form__input input[type="radio"]:checked + .color-swatch,
 .product .product-form__input input[type="radio"]:hover + .color-swatch {
-  border: 3px solid #ccd1d1; 
+  border: 3px solid #ccd1d1;
 }
 
 .product .product-form__input input[type="radio"] + .swatch {
@@ -21,9 +21,8 @@
   align-items: center;
 }
 
-
 .product .product-form__input input[type="radio"]:checked + .swatch,
 .product .product-form__input input[type="radio"]:hover + .swatch {
-  border: 3px solid #ccd1d1; 
+  border: 3px solid #ccd1d1;
   background: none;
 }

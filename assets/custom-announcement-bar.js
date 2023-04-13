@@ -1,4 +1,4 @@
-document.addEventListener("load", function() {
+window.addEventListener("DOMContentLoaded", function () {
   addCloseButton();
 });
 
@@ -9,9 +9,7 @@ document.addEventListener("load", function() {
  */
 
 function addCloseButton() {
-  const announcementBar = document.querySelector(
-    ".announcement-bar"
-  );
+  const announcementBar = document.querySelector(".announcement-bar");
 
   const closeButton = document.createElement("button");
   closeButton.setAttribute("type", "button");

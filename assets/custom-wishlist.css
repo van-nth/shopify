@@ -1,19 +1,19 @@
 :root {
-  --shopify-wishlist-color-black: #000000;
-  --shopify-wishlist-color-red: #ef4643;
-  --shopify-wishlist-icon-size: 2rem;
+  --custom-wishlist-color-black: #000000;
+  --custom-wishlist-color-red: #ef4643;
+  --custom-wishlist-icon-size: 2rem;
 }
 
 #wishlist-icon-bubble {
   position: relative;
 }
 
-button#shopify-wishlist {
+button#custom-wishlist {
   background: transparent;
   border: none;
 }
 
-button.shopify-wishlist {
+button.custom-wishlist {
   margin-top: 10px;
   background: transparent;
   padding: 1rem 2rem;
@@ -21,25 +21,26 @@ button.shopify-wishlist {
   align-items: center;
   justify-content: center;
   background-color: transparent;
-  color: var(--shopify-wishlist-color-black);
-  border: 1px solid var(--shopify-wishlist-color-black);
+  color: var(--custom-wishlist-color-black);
+  border: 1px solid var(--custom-wishlist-color-black);
   transition: all 0.3s ease-in-out;
   text-decoration: none;
   width: 100%;
+  cursor: pointer;
 }
 
-button.shopify-wishlist svg {
-  width: var(--shopify-wishlist-icon-size);
-  height: var(--shopify-wishlist-icon-size);
+button.custom-wishlist svg {
+  width: var(--custom-wishlist-icon-size);
+  height: var(--custom-wishlist-icon-size);
   margin-right: 10px;
 }
 
-.wishlist-count-bubble {
-  background-color: var(--shopify-wishlist-color-red);
+.custom-wishlist-count-bubble {
+  background-color: var(--custom-wishlist-color-red);
   color: #fff;
   position: absolute;
-  height: var(--shopify-wishlist-icon-size);
-  width: var(--shopify-wishlist-icon-size);
+  height: var(--custom-wishlist-icon-size);
+  width: var(--custom-wishlist-icon-size);
   border-radius: 100%;
   font-size: 0.9rem;
   bottom: 0.8rem;
@@ -47,21 +48,26 @@ button.shopify-wishlist svg {
   text-align: center;
 }
 
-.shopify-wishlist.active {
-  border-color: var(--shopify-wishlist-color-red);
-  color: var(--shopify-wishlist-color-red);
+.custom-wishlist.active {
+  border-color: var(--custom-wishlist-color-red);
+  color: var(--custom-wishlist-color-red);
 }
 
-#page-wishlist .table-wishlist {
+#page-custom-wishlist .table-wishlist {
   width: 100%;
 }
 
-button.shopify-wishlist-remove {
+button.custom-wishlist-remove {
   background-color: transparent;
   border: none;
+  cursor: pointer;
 }
 
-button.shopify-wishlist-remove svg {
-  height: var(--shopify-wishlist-icon-size);
-  width: var(--shopify-wishlist-icon-size);
+button.custom-wishlist-remove svg {
+  height: var(--custom-wishlist-icon-size);
+  width: var(--custom-wishlist-icon-size);
+}
+
+.custom-wishlist-item__buttons {
+  pointer-events: none;
 }

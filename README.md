@@ -45,16 +45,16 @@
 
 ### Installation
 
-1. Copy and paste 2 files `assets/shopify-wishlist.js` and `assets/shopify-wishlist.css` in this repo to `assets` folder in your Theme
+1. Copy and paste 2 files `assets/custom-wishlist.js` and `assets/custom-wishlist.css` in this repo to `assets` folder in your Theme
 
 2. Place the script in `layout/theme.liquid` before the closing `<head>` tag
 
 ```html
 <script
-  id="wishlist"
+  id="script-custom-wishlist"
   data-currency="{{ cart.currency.iso_code }}"
   data-handle="{{ product.handle }}"
-  src="{{ 'shopify-wishlist.js' | asset_url }}"
+  src="{{ 'custom-wishlist.js' | asset_url }}"
   defer="defer"
 ></script>
 ```
@@ -62,15 +62,13 @@
 3. Place these style in `layout/theme.liquid` before the closing `</body>` tag
 
 ```liquid
-{{ 'shopify-wishlist.css' | asset_url | stylesheet_tag }}
+{{ 'custom-wishlist.css' | asset_url | stylesheet_tag }}
 ```
 
 4. Go to store Admin Dashboard > Pages > Add page with:
 
 Title = Wishlist  
-Content = `<div id="page-wishlist"></div>` (Click the `<>` show HTML button to paste the string as code)  
-Visibility = Visible
-
+Content = `<div id="page-custom-wishlist"></div>` (Click the `<>` show HTML button to paste the string as code)  
 and save the page.
 
 ### Usage
