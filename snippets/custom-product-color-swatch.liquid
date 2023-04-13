@@ -1,0 +1,21 @@
+{% liquid assign variant_needed = null %}
+{% for variant in product.variants %}
+  {% if variant.options contains value %}
+    {% assign variant_needed = variant %}
+  {% endif %}
+{% endfor %}  
+
+{% if variant_needed.metafields.custom.color_swatch and option.name == "Color" %}
+  <label class="color-swatch" for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" data-option="{{ value }}" style="background-color: {{variant_needed.metafields.custom.color_swatch}}">
+    &nbsp
+  </label>
+{% elsif variant_needed.metafields.image.swatch and option.name == "Color" %}
+  <label class="color-swatch" for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}" data-option="{{ value }}" style="background-size: cover; background-image: url('{{variant_needed.metafields.image.swatch}}')">
+    &nbsp
+  </label>
+{% else %}
+  <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
+    {{ value }}
+    <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
+  </label>
+{% endif %}

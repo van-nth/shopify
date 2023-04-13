@@ -66,3 +66,46 @@ and save the page.
 1. Go to any product
 2. Toggle the 'Add to wishlist' button below the 'Buy it now' to add/remove the item from wishlist
 3. Click the wishlist icon on the header before the Cart icon to view the wishlist
+
+
+### Product color and pattern swatch
+
+#### Installation
+
+1. From Shopify Admin > Settings > Custom data > Metafields or simply type Metafields on Search bar on the top of Admin Dashboard
+
+2. On Metafields > Click Variants
+
+3. Create 2 metafields for Variants
+
+   - 1st metafield: **Name**: "color swatch"; **Namespace and key**: "custom.color_swatch"; Select **Type** as **Color**
+   - 2nd metafield: **Name**: "pattern swatch"; **Namespace and key**: "custom.pattern_swatch"; Select **Type** as **URL**
+   
+4. Go to any product you want to add color/pattern swatch > Variants > Select Color > Add color list you want and matching images 
+
+5. On each Color Variant > click Edit > Metafields > Select either color swatch or pattern swatch > Add color code for color swatch or URL for pattern swatch
+
+6. Go to online store > Edit code
+
+7. Open Snippets/product-variant-options.liquid then find the code below:
+
+```
+  <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
+    {{ value }}
+    <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
+  </label>
+```
+
+replaced with the code in **snippets/custom-product-color-swatch.liquid**
+
+
+8. Copy and paste `custom-product-color-swatch.css` in this repo to `assets` folder in your Theme
+
+9. Place these style in `layout/theme.liquid` before the closing `</body>` tag
+
+```liquid
+{{ 'custom-product-color-swatch.css' | asset_url | stylesheet_tag }}
+```
+
+#### Usage
+Go to the product with color/pattern swatch > the default text label now replaced by color or pattern swatch.
