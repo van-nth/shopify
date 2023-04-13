@@ -68,6 +68,8 @@ and save the page.
 3. Click the wishlist icon on the header before the Cart icon to view the wishlist
 
 
+## Snippets
+
 ### Product color and pattern swatch
 
 #### Installation
