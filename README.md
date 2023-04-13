@@ -1,14 +1,20 @@
 # Shopify
 
 > Shopify scripts, blocks, snippets
+> Note: work on Dawn Theme version 9.0.0
 
-## Assets
 
-### Announcement bar
+## Announcement bar
 
-#### Installation
+### Description:
 
-1. Copy and paste 2 files `custom-announcement-bar.js` and `custom-announcement-bar.css` in this repo to `assets` folder in your Theme
+    - Append a x button to the announcement bar
+    - addEventListener.click to button to hide bar by adding a class & adding a value to localStorage.setItem(isAnnouncementHiddenKey, true)
+    - if localStorage value set, trigger a click to hide the bar on load
+
+### Installation
+
+1. Copy and paste 2 files `assets/custom-announcement-bar.js` and `assets/custom-announcement-bar.css` in this repo to `assets` folder in your Theme
 
 2. Place the script in `layout/theme.liquid` before the closing `<head>` tag
 
@@ -25,15 +31,21 @@
 {{ 'custom-announcement-bar.css' | asset_url | stylesheet_tag }}
 ```
 
-#### Usage
+### Usage
 
 1. The script automatically injects "X" (close) button into the Announcement Bar section
 
-### Wishlist
+## Wishlist
 
-#### Installation
+### Description:
 
-1. Copy and paste 2 files `shopify-wishlist.js` and `shopify-wishlist.css` in this repo to `assets` folder in your Theme
+    - Create a simple **Add to Wishlist** function to product page
+    - Wishlist Page: remove item, add item to cart
+    - Update cart icon and wishlist icon
+
+### Installation
+
+1. Copy and paste 2 files `assets/shopify-wishlist.js` and `assets/shopify-wishlist.css` in this repo to `assets` folder in your Theme
 
 2. Place the script in `layout/theme.liquid` before the closing `<head>` tag
 
@@ -61,18 +73,20 @@ Visibility = Visible
 
 and save the page.
 
-#### Usage
+### Usage
 
 1. Go to any product
 2. Toggle the 'Add to wishlist' button below the 'Buy it now' to add/remove the item from wishlist
 3. Click the wishlist icon on the header before the Cart icon to view the wishlist
 
 
-## Snippets
+## Product color and pattern swatch
 
-### Product color and pattern swatch
+### Description:
+    
+    - Add Color Swatches and pattern swatches for product variants
 
-#### Installation
+### Installation
 
 1. From Shopify Admin > Settings > Custom data > Metafields or simply type Metafields on Search bar on the top of Admin Dashboard
 
@@ -101,7 +115,7 @@ and save the page.
 replaced with the code in **snippets/custom-product-color-swatch.liquid**
 
 
-8. Copy and paste `custom-product-color-swatch.css` in this repo to `assets` folder in your Theme
+8. Copy and paste `assets/custom-product-color-swatch.css` in this repo to `assets` folder in your Theme
 
 9. Place these style in `layout/theme.liquid` before the closing `</body>` tag
 
@@ -109,5 +123,5 @@ replaced with the code in **snippets/custom-product-color-swatch.liquid**
 {{ 'custom-product-color-swatch.css' | asset_url | stylesheet_tag }}
 ```
 
-#### Usage
+### Usage
 Go to the product with color/pattern swatch > the default text label now replaced by color or pattern swatch.
