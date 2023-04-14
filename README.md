@@ -1,8 +1,7 @@
 # Shopify
 
 > Shopify scripts, blocks, snippets
-(* *Note: work on Dawn Theme version 9.0.0* *)
-
+> (\* _Note: work on Dawn Theme version 9.0.0_ \*)
 
 ## Announcement bar
 
@@ -77,11 +76,10 @@ and save the page.
 2. Toggle the 'Add to wishlist' button below the 'Buy it now' to add/remove the item from wishlist
 3. Click the wishlist icon on the header before the Cart icon to view the wishlist
 
-
 ## Product color and pattern swatch
 
 ### Description:
-    
+
     - Add Color Swatches and pattern swatches for product variants
 
 ### Installation
@@ -94,32 +92,35 @@ and save the page.
 
    - 1st metafield: **Name**: "color swatch"; **Namespace and key**: "custom.color_swatch"; Select **Type** as **Color**
    - 2nd metafield: **Name**: "pattern swatch"; **Namespace and key**: "custom.pattern_swatch"; Select **Type** as **URL**
-   
-4. Go to any product you want to add color/pattern swatch > Variants > Select Color > Add color list you want and matching images 
+
+4. Go to any product you want to add color/pattern swatch > Variants > Select Color > Add color list you want and matching images
 
 5. On each Color Variant > click Edit > Metafields > Select either color swatch or pattern swatch > Add color code for color swatch or URL for pattern swatch
 
-6. Go to online store > Edit code
+6. Copy and paste `snippets/custom-product-color-swatch.liquid` in this repo to `snippets` folder in your Theme
 
-7. Open Snippets/product-variant-options.liquid then find the code below:
+7. Go to online store > Edit code
+
+8. Open Snippets/product-variant-picker.liquid then find the code below:
 
 ```
-  <label for="{{ section.id }}-{{ option.position }}-{{ forloop.index0 }}">
-    {{ value }}
-    <span class="visually-hidden">{{ 'products.product.variant_sold_out_or_unavailable' | t }}</span>
-  </label>
+  {% render 'product-variant-options', product: product, option: option, block: block %}
 ```
 
-replaced with the code in **snippets/custom-product-color-swatch.liquid**
+replaced with the code below:
 
+```
+  {% render 'custom-product-color-swatch', product: product, option: option, block: block %}
+```
 
-8. Copy and paste `assets/custom-product-color-swatch.css` in this repo to `assets` folder in your Theme
+9. Copy and paste `assets/custom-product-color-swatch.css` in this repo to `assets` folder in your Theme
 
-9. Place these style in `layout/theme.liquid` before the closing `</body>` tag
+10. Place these style in `layout/theme.liquid` before the closing `</body>` tag
 
 ```liquid
 {{ 'custom-product-color-swatch.css' | asset_url | stylesheet_tag }}
 ```
 
 ### Usage
+
 Go to the product with color/pattern swatch > the default text label now replaced by color or pattern swatch.
