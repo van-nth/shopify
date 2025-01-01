@@ -1,0 +1,84 @@
+{{ 'custom-announcement-bar.css' | asset_url | stylesheet_tag }}
+
+{%- style -%}
+  .custom-announcement-bar__{{ section.id }} {
+    background-color: {{ section.settings.announcement_background }};
+    color: {{ section.settings.text_color }};
+    padding: 10px 20px;
+    text-align: center;
+  }
+
+  .custom-announcement-bar__{{ section.id }} .announcement-bar__message {
+    color: {{ section.settings.text_color }};
+  }
+
+  .announcement-bar__link {
+    cursor: pointer;
+    text-decoration: none;
+  }
+{%- endstyle -%}
+
+{%- if section.settings.text != blank -%}
+  <div
+    id="custom-announcement-bar"
+    class="custom-announcement-bar__{{ section.id }} custom-announcement-bar"
+    role="region"
+    aria-label="custom-announcement-bar"
+  >
+    {%- if section.settings.text != blank -%}
+      {%- if section.settings.link != blank -%}
+        <a
+          href="{{ section.settings.link }}"
+          class="announcement-bar__link link link--text focus-inset"
+        >
+      {%- endif -%}
+      <p class="announcement-bar__message h5">
+        <span>{{ section.settings.text | escape }}</span>
+      </p>
+      {%- if section.settings.link != blank -%}
+        </a>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Custom announcement bar",
+  "tag": "section",
+  "class": "section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "color",
+      "id": "announcement_background",
+      "label": "Announcement background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "default": "Welcome to our store",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "URL"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom announcement bar"
+    }
+  ]
+}
+{% endschema %}
