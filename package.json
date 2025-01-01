@@ -1,38 +1,32 @@
 {
   "name": "@van-nth/shopify",
   "version": "1.0.0",
-  "description": "Shopify scripts, blocks, snippets",
-  "main": "''",
+  "description": "Shopify theme snippets",
+  "main": "index.js",
+  "private": true,
   "scripts": {
-    "lint": "eslint",
-    "format": "prettier --write '**/*.{css,js,md}'"
+    "format": "prettier --write ."
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/van-nth/shopify.git"
+    "url": "git+ssh://git@github.com/van-nth/shopify.git"
   },
   "keywords": [
-    "shopify"
+    "shopify",
+    "theme",
+    "snippets"
   ],
-  "author": "van-nth",
+  "author": "Van Nguyen",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/van-nth/shopify/issues"
   },
   "homepage": "https://github.com/van-nth/shopify#readme",
-  "devDependencies": {
-    "eslint": "^8.38.0",
-    "eslint-config-prettier": "^8.8.0",
-    "prettier": "^2.8.7"
+  "engines": {
+    "node": "22"
   },
-  "eslintConfig": {
-    "env": {
-      "browser": true,
-      "es6": true
-    },
-    "extends": [
-      "eslint:recommended",
-      "prettier"
-    ]
+  "devDependencies": {
+    "@shopify/prettier-plugin-liquid": "^1.6.3",
+    "prettier": "^3.4.2"
   }
 }

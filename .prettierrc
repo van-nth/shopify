@@ -1,0 +1,11 @@
+{
+  "overrides": [
+    {
+      "files": "*.svg",
+      "options": {
+        "parser": "html"
+      }
+    }
+  ],
+  "plugins": ["@shopify/prettier-plugin-liquid"]
+}
