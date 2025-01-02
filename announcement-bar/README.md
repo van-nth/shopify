@@ -11,15 +11,7 @@
 
 ## Installation
 
-1. Copy and paste [custom-custom-announcement-bar.liquid](./sections/custom-announcement-bar.liquid/) into `sections` folder in your Theme
-
-2. Copy and paste 2 files [custom-custom-announcement-bar.js](.announcement-bar/assets/custom-announcement-bar.js/) and [custom-custom-announcement-bar.css](.announcement-bar/assets/custom-announcement-bar.css/) into `assets` folder in your Theme
-
-3. Place the script in `layout/theme.liquid` before the closing `<head>` tag
-
-```html
-<script src="{{ 'custom-announcement-bar.js' | asset_url }}" defer></script>
-```
+Copy and paste [custom-announcement-bar.liquid](./sections/custom-announcement-bar.liquid/) into `sections` folder in your Theme
 
 ## Usage
 
