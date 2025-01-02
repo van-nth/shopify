@@ -4,5 +4,6 @@
   "[liquid]": {
     "editor.defaultFormatter": "Shopify.theme-check-vscode"
   },
-  "themeCheck.checkOnSave": true
+  "themeCheck.checkOnSave": false,
+  "themeCheck.checkOnChange": false
 }
