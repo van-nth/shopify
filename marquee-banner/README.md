@@ -1,4 +1,4 @@
-# Shopify Custom Announcement Bar Theme Extension
+# Shopify Custom Theme Extension - Marquee Banner
 
 ![Screen recording](./assets/marquee-banner.gif)
 
