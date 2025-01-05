@@ -1,0 +1,574 @@
+{%- style -%}
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+        padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+      }
+
+      .content-container {
+        text-align: {{ section.settings.desktop_content_alignment }};
+      }
+
+      .video-carousel-section .slider-component-full-width {
+        width: 100vw;
+        max-width: 100vw;
+        padding-left: 0;
+        padding-right: 0;
+      }
+
+      .video-carousel-section slider-component ul {
+        display: flex;
+        flex-wrap: nowrap;
+        overflow: hidden;
+        scroll-snap-type: x mandatory;
+        width: 100%;
+        white-space: nowrap;
+      }
+
+      .video-carousel-section .slider-mobile-gutter ul li {
+        display: grid;
+        grid-template-rows: 1fr auto;
+      }
+
+      .video-carousel-section .pagination {
+        position: relative;
+        display: flex;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        padding-top: 2rem;
+        gap: 6px;
+      }
+
+      .video-carousel-section .pagination button {
+        padding: 10px;
+        background-color: transparent;
+        border: 1px solid #000000;
+        color: #000000;
+      }
+
+      .video-carousel-section .pagination button.active {
+        background-color: #000000;
+        color: #ffffff;
+      }
+
+      .video-carousel-section .pagination .prev-button {
+        position: absolute;
+        left: 4rem;
+        cursor: pointer;
+      }
+
+      .video-carousel-section .pagination .next-button {
+        position: absolute;
+        right: 4rem;
+        cursor: pointer;
+      }
+
+      .video-item__media {
+      --ratio-percent: 56.25%;
+      position: relative;
+      padding-bottom: calc(var(--ratio-percent) - var(--media-border-width));
+    }
+
+    /* Needed for gradient continuity with or without animation so that transparent PNG images come up as we would expect */
+    .scroll-trigger:where(.gradient.video-item__media) {
+      background: transparent;
+    }
+
+    .video-item__media.global-media-settings--full-width {
+      padding-bottom: var(--ratio-percent);
+    }
+
+    .video-item__media.deferred-media {
+      box-shadow: var(--media-shadow-horizontal-offset) var(--media-shadow-vertical-offset) var(--media-shadow-blur-radius)
+        rgba(var(--color-shadow), var(--media-shadow-opacity));
+    }
+
+    .video-item__media.deferred-media:after {
+      content: none;
+    }
+
+    .video-item__poster.deferred-media__poster:focus {
+      outline-offset: 0.3rem;
+    }
+
+    .video-item__media iframe {
+      background-color: rgba(var(--color-foreground), 0.03);
+      border: 0;
+    }
+
+    .video-item__poster,
+    .video-item__media iframe,
+    .video-item__media video {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+
+    .video-item__media video {
+      background: #000000;
+    }
+
+    .video-item__media.media-fit-cover video {
+      object-fit: cover;
+    }
+
+    .video-item__content {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      align-items: center;
+      justify-content: space-between;
+      border: 1px solid #ccc;
+      border-radius: var(--media-radius);
+      margin-top: 10px;
+      padding: 1rem;
+    }
+
+    .video-item__content .content-media,
+    .video-item__content svg {
+      max-width: 100%;
+      height: auto;
+    }
+
+  .hidden {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    height: 1px;
+    overflow: hidden;
+    position: absolute;
+    white-space: nowrap;
+    width: 1px;
+  }
+
+    @media screen and (min-width: 750px) {
+      .section-{{ section.id }}-padding {
+        padding-top: {{ section.settings.padding_top }}px;
+        padding-bottom: {{ section.settings.padding_bottom }}px;
+      }
+    }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="video-carousel-section isolate section-{{ section.id }}-padding">
+    {%- unless section.settings.heading == blank -%}
+      <div class="title-wrapper title-wrapper--no-top-margin{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %} page-width">
+        <h2 class="title inline-richtext {{ section.settings.heading_size }}">{{ section.settings.heading }}</h2>
+      </div>
+    {%- endunless -%}
+    <slider-component class="videos-container slider-mobile-gutter {% if section.settings.full_width == false %}page-width{% endif %}">
+      <ul
+        id="Slider-{{ section.id }}"
+        data-id="{{ section.id }}"
+        class="video-list-items grid grid--{{ section.settings.columns_mobile }}-col-tablet-down grid--{{ section.settings.columns_desktop }}-col-desktop"
+        role="list"
+        aria-label="{{ 'general.slider.name' | t }}"
+      >
+        {%- for block in section.blocks -%}
+          {%- liquid
+            assign video_id = block.settings.video.id | default: block.settings.video_url.id
+            assign alt = block.settings.video.alt | default: block.settings.description
+            assign poster = block.settings.video.preview_image | default: block.settings.cover_image
+
+            if block.settings.video != null
+              assign ratio_diff = block.settings.video.aspect_ratio | minus: poster.aspect_ratio | abs
+              if ratio_diff < 0.01 and ratio_diff > 0
+                assign fix_ratio = true
+              endif
+            endif
+          -%}
+          {%- capture sizes -%}
+            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 }}px, (min-width: 750px)
+            calc(100vw - 10rem), 100vw
+          {%- endcapture -%}
+          <li
+            id="Slide-{{ section.id }}-{{ forloop.index }}"
+            class="grid__item {% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+            {% if settings.animations_reveal_on_scroll %}
+              data-cascade
+            {% endif %}
+          >
+            <deferred-media
+              class="video-item__media deferred-media gradient global-media-settings {% if fix_ratio %} media-fit-cover{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+              data-media-id="{{ video_id }}"
+              {% if poster != null %}
+                style="--ratio-percent: {{ 1 | divided_by: poster.aspect_ratio | times: 100 }}%;"
+              {% endif %}
+            >
+              <button
+                id="Deferred-Poster-Modal-{{ video_id }}"
+                class="video-item__poster media deferred-media__poster media--landscape"
+                type="button"
+                aria-label="{{ alt }}"
+              >
+                {%- if poster != null -%}
+                  {{
+                    poster
+                    | image_url: width: 3840
+                    | image_tag: sizes: sizes, widths: '375, 750, 1100, 1500, 1780, 2000, 3000, 3840', alt: alt
+                  }}
+                {%- else -%}
+                  {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+                {%- endif -%}
+                <span class="deferred-media__poster-button motion-reduce">
+                  {%- render 'icon-play' -%}
+                </span>
+              </button>
+              <template>
+                {%- if block.settings.video == null and block.settings.video_url != null -%}
+                  {%- liquid
+                    assign loop = ''
+                    if block.settings.enable_video_looping
+                      assign loop = '&loop=1&playlist=' | append: video_id
+                    endif
+                  -%}
+                  {%- if block.settings.video_url.type == 'youtube' -%}
+                    <iframe
+                      src="https://www.youtube.com/embed/{{ video_id }}?enablejsapi=1&autoplay=1{{ loop }}"
+                      class="js-youtube"
+                      allow="autoplay; encrypted-media"
+                      allowfullscreen
+                      title="{{ block.settings.description | escape }}"
+                    ></iframe>
+                  {%- else -%}
+                    <iframe
+                      src="https://player.vimeo.com/video/{{ video_id }}?autoplay=1{{ loop }}"
+                      class="js-vimeo"
+                      allow="autoplay; encrypted-media"
+                      allowfullscreen
+                      title="{{ block.settings.description | escape }}"
+                    ></iframe>
+                  {%- endif -%}
+                {%- else -%}
+                  {{
+                    block.settings.video
+                    | video_tag:
+                      image_size: '1100x',
+                      autoplay: true,
+                      loop: block.settings.enable_video_looping,
+                      controls: true,
+                      muted: false
+                  }}
+                {%- endif -%}
+              </template>
+            </deferred-media>
+            <div class="video-item__content grid">
+              {%- if block.settings.content_image != blank -%}
+                {%- capture sizes -%}
+                  (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+                  (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+                {%- endcapture -%}
+                {{
+                  block.settings.content_image
+                  | image_url: width: 1500
+                  | image_tag: sizes: sizes, widths: '165, 360, 535, 750, 1070, 1500', class: 'content-media'
+                }}
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+              {%- endif -%}
+              <div class="content-text">
+                {%- if block.settings.label != blank -%}
+                  <a
+                    {% if block.settings.label_url == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.label_url }}"
+                    {% endif %}
+                    class="heading"
+                  >
+                    <h3>{{ block.settings.label }}</h3>
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </slider-component>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const ul = document.getElementById(`Slider-{{ section.id }}`);
+    const items = Array.from(ul.getElementsByTagName('li')).slice(0);
+    const length = ul.querySelectorAll('li').length;
+    const paginationDesktop = Math.ceil(length / parseInt({{ section.settings.columns_desktop }}));
+    const paginationMobile = Math.ceil(length / parseInt({{ section.settings.columns_mobile }}));
+    let currentPage = 0;
+    const paginationContainer = document.createElement('div');
+    paginationContainer.classList.add('pagination');
+    
+    const resizeObserverCallback = (entries, observer) => {
+      const screenSize = document.body.clientWidth;
+      let paginationCount = 0;
+      let itemsPerPage = 0;
+      
+      if (screenSize >= 990) {
+        paginationCount = paginationDesktop;
+        itemsPerPage = parseInt({{ section.settings.columns_desktop }});
+      } else {
+        paginationCount = paginationMobile;
+        itemsPerPage = parseInt({{ section.settings.columns_mobile }});
+      }
+      paginationContainer.innerHTML = ''; // clear the div
+    
+      function showPage(page) {
+        const startIndex = page * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        items.forEach((item, index) => {
+          item.classList.toggle('hidden', index < startIndex || index >= endIndex);
+        });
+        updateActiveButtonStates();
+      }
+      
+      function createPageButtons() {
+        for (let i = 0; i < paginationCount; i++) {
+          const pageButton = document.createElement('button');
+          pageButton.textContent = i + 1;
+          pageButton.addEventListener('click', (el) => {
+            el.preventDefault();
+            el.stopPropagation();
+            currentPage = i;
+            console.log(currentPage);
+            showPage(currentPage);
+            updateActiveButtonStates();
+          });
+          paginationContainer.appendChild(pageButton);
+        }
+        
+        const nextButton = document.createElement('button');
+        const prevButton = document.createElement('button');
+        nextButton.innerText = 'Next';
+        prevButton.innerText = 'Prev';
+        nextButton.classList.add('next-button');
+        prevButton.classList.add('prev-button');
+        if(paginationCount > 1) {
+          paginationContainer.appendChild(prevButton);
+          paginationContainer.appendChild(nextButton);
+        }
+        
+        nextButton.addEventListener('click', () => {
+          if(currentPage == paginationCount - 1) {
+            currentPage = 0;
+          } else {
+            currentPage = currentPage + 1;
+          } 
+          showPage(currentPage);
+        });
+        
+        prevButton.addEventListener('click', () => {
+          if(currentPage == 0) {
+            currentPage = paginationCount - 1;
+          } else {
+            currentPage = currentPage - 1;
+          } 
+          showPage(currentPage);
+        })
+      }
+      
+      
+      function updateActiveButtonStates() {
+        const pageButtons = paginationContainer.querySelectorAll('.pagination button');
+        pageButtons.forEach((button, index) => {
+          if (index === currentPage) {
+            button.classList.add('active');
+          } else {
+            button.classList.remove('active');
+          }
+        });
+      }
+      
+      if(paginationCount > 1) {
+        ul.parentNode.appendChild(paginationContainer);
+      }
+      createPageButtons(); // Call this function to create the page buttons initially
+      showPage(currentPage);
+    };
+    const resizeObserver = new ResizeObserver(resizeObserverCallback);
+    resizeObserver.observe(document.querySelector('main'));
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Video carousel",
+  "class": "video-carousel-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "section_color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Video",
+      "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "header",
+      "content": "Style"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Make section full width",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Columns on desktop"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1",
+      "label": "Columns on mobile"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "video",
+      "name": "Video",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Shopify-hosted video"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video"
+        },
+        {
+          "type": "header",
+          "content": "Or embed video from URL"
+        },
+        {
+          "type": "paragraph",
+          "content": "Shows when no Shopify-hosted video is selected."
+        },
+        {
+          "type": "video_url",
+          "id": "video_url",
+          "accept": ["youtube", "vimeo"],
+          "default": "https://www.youtube.com/watch?v=_9VUPq3SxOc",
+          "label": "URL",
+          "info": "Use a YouTube or Vimeo URL"
+        },
+        {
+          "type": "image_picker",
+          "id": "cover_image",
+          "label": "Cover image"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Video alt text",
+          "info": "Describe the video for customers using screen readers"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_video_looping",
+          "label": "Enable video looping",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Video content"
+        },
+        {
+          "type": "image_picker",
+          "id": "content_image",
+          "label": "Content image"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Product title"
+        },
+        {
+          "type": "url",
+          "id": "label_url",
+          "label": "Label URL"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video carousel",
+      "blocks": [
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        },
+        {
+          "type": "video"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
