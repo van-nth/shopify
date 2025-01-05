@@ -1,0 +1,286 @@
+{% style %}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .custom-product-tabs .tab-heading-container {
+    align-items: center;
+    border-bottom: 1px solid #ddd;
+    display: flex;
+    align-items: center;
+    padding: 0;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .custom-product-tabs .tab-heading-container::before {
+    display: table;
+    content: "";
+  }
+
+  .custom-product-tabs li.custom-tab-button {
+    margin-bottom: -1px;
+    display: block;
+    position: relative;
+    border: none;
+    background-color: transparent;
+    cursor: pointer;
+  }
+
+  .custom-product-tabs a.tab__title {
+    text-transform: uppercase;
+    position: relative;
+    display: block;
+    padding: 10px 15px;
+    cursor: pointer;
+  }
+
+  .custom-product-tabs li.custom-tab-button.active a.tab__title {
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-bottom-color: transparent;
+    font-weight: 700;
+    color: #000000;
+  }
+
+  .custom-product-tabs .custom-tab-content {
+    display: none;
+    padding: 1rem;
+  }
+
+  .custom-product-tabs .custom-tab-content.active {
+    display: block;
+  }
+
+  .custom-tab-content {
+    width: 100%;
+  }
+
+  .custom-product-tabs .rte {
+    color: var(--black-color-100) !important;
+  }
+
+  @media screen and (max-width: 765px) {
+    .tab-heading-container {
+      overflow: auto;
+      scroll-snap-type: x mandatory;
+      width: 100%;
+    }
+  }
+{% endstyle %}
+
+<div class="custom-product-tabs color-{{ section.settings.color_scheme }} gradient page-width">
+  <div
+    class="product-tabs__header{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+    style="text-align: {{ section.settings.heading_alignment }};"
+  >
+    {%- if section.settings.heading != blank -%}
+      <h2 class="product-tabs__heading inline-richtext {{ section.settings.heading_size }}">
+        {{ section.settings.heading }}
+      </h2>
+    {% endif %}
+  </div>
+  <div class="product-tabs__content">
+    <ul class="tab-heading-container">
+      {%- for block in section.blocks -%}
+        {% assign index = forloop.index %}
+        <li
+          id="{{ block.id }}-{{ section.id }}"
+          class="custom-tab-button {% if index == 1 %}active{% endif %}"
+          aria-selected="true"
+          role="tab"
+          type="button"
+          index="{{ forloop.index }}"
+        >
+          <a class="tab__title inline-richtext h4">
+            {{ block.settings.heading | default: block.settings.page.title }}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- for block in section.blocks -%}
+      {% assign index = forloop.index %}
+      <div
+        class="custom-tab-content accordion__content rte {% if index == 1 %}active{% endif %}"
+        id="{{ block.id }}-{{ section.id }}"
+        role="tabpanel"
+        aria-labelledby="{{ block.id }}-{{ section.id }}"
+        aria-selected="true"
+      >
+        {{ block.settings.content }}
+        {{ block.settings.page.content }}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% javascript %}
+  const tabs = document.querySelectorAll('.custom-tab-button');
+  const tabContents = document.querySelectorAll('.custom-tab-content');
+
+  tabs.forEach((tab, tabIndex) => {
+    tab.addEventListener('click', () => {
+      tabs.forEach((el, i) => {
+        if (tabIndex === i) {
+          el.classList.add('active');
+        } else {
+          el.classList.remove('active');
+        }
+      });
+
+      tabContents.forEach((el, contentIndex) => {
+        if (contentIndex === tabIndex) {
+          el.classList.add('active');
+        } else {
+          el.classList.remove('active');
+        }
+      });
+
+      if (tabIndex === 0) {
+        tabs[0].click(); // on 1st load activate
+      }
+    });
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Product tabs",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "t:sections.collapsible_content.settings.heading.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_alignment",
+      "label": "t:sections.collapsible_content.settings.heading_alignment.label",
+      "options": [
+        {
+          "value": "left",
+          "label": "t:sections.collapsible_content.settings.heading_alignment.options__1.label"
+        },
+        {
+          "value": "center",
+          "label": "t:sections.collapsible_content.settings.heading_alignment.options__2.label"
+        },
+        {
+          "value": "right",
+          "label": "t:sections.collapsible_content.settings.heading_alignment.options__3.label"
+        }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "container_color_scheme",
+      "label": "t:sections.collapsible_content.settings.container_color_scheme.label",
+      "info": "t:sections.collapsible_content.settings.container_color_scheme.info",
+      "default": "scheme-2"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Product Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Tab heading"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Tab content"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Page"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product tabs",
+      "blocks": [
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        },
+        {
+          "type": "tab"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
