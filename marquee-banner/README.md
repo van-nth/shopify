@@ -1,4 +1,4 @@
-# Shopify Custom Theme Extension - Marquee Banner
+# Shopify Dawn Theme Extension - Marquee Banner
 
 ![Screen recording](./assets/marquee-banner.gif)
 

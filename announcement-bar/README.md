@@ -1,4 +1,4 @@
-# Shopify Custom Theme Extension - Announcement Bar
+# Shopify Dawn Theme Extension - Announcement Bar
 
 ![Screen recording](./assets/custom-announcement-bar.gif)
 
