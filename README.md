@@ -5,3 +5,4 @@
 - [Video Carousel](./video-carousel/)
 - [Product Grid List View](./product-grid-list-view/)
 - [Product Tabs](./product-tabs/)
+- [Age Verification](./age-verification/)
