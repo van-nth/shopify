@@ -12,26 +12,61 @@
 1. Open `sections/header.liquid`
 
 - Add this object to the `settings` of section schema
-  ```liquid
-  { "type": "select", "id": "drawer_type", "options": [ { "value":
-  "drawer_dropdown", "label": "Dropdown" }, { "value": "drawer_default",
-  "label": "Default" }, ], "default": "drawer_default", "label": "Drawer menu
-  type", }
-  ```
-- Find this line of code
 
+```json
+    {
+      "type": "select",
+      "id": "drawer_type",
+      "options": [
+        {
+          "value": "drawer_dropdown",
+          "label": "Dropdown"
+        },
+        {
+          "value": "drawer_default",
+          "label": "Default"
+        },
+      ],
+      "default": "drawer_default",
+      "label": "Drawer menu type",
+    },
+
+```
+
+  
+- Find this code (where the `snippets/header-drawer` is rendered):
 ```liquid
-if section.settings.menu != blank render 'header-drawer' endif
+{%- liquid
+    if section.settings.menu != blank 
+        render 'header-drawer'
+    endif
+
+    if section.settings.logo_position == 'top-center' or section.settings.menu == blank
+        render 'header-search', input_id: 'Search-In-Modal-1'
+    endif
+-%}
 ```
 
 and replace by this:
 
-`````liquid
-if section.settings.menu != blank render 'header-drawer', drawer_type:
-drawer_type endif ```
+```liquid
+{%- liquid
+    assign drawer_type = section.settings.drawer_type
+    if section.settings.menu != blank 
+        render 'header-drawer', drawer_type: drawer_type
+    endif
 
-2. Open `snippets/header-drawer.liquid` delete all the code and replace by the
-code in [header-drawer.liquid](./snippets/header-drawer.liquid/)
+    if section.settings.logo_position == 'top-center' or section.settings.menu == blank
+        render 'header-search', input_id: 'Search-In-Modal-1'
+    endif
+-%}
+```
 
-## Usage ````liquid {% render 'header-drawer', drawer_type: drawer_type %}
-`````
+
+2. Open `snippets/header-drawer.liquid` > Delete all the code and replace by the code in [header-drawer.liquid](./snippets/header-drawer.liquid/)
+
+
+## Usage 
+```liquid
+{% render 'header-drawer', drawer_type: drawer_type %}
+```
