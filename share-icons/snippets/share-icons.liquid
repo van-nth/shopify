@@ -1,0 +1,116 @@
+{% comment %}
+  Renders share icons for social media.
+  Usage:
+  {% render 'share-icons' %}
+{% endcomment %}
+
+{%- liquid
+  assign share_title = share_title | url_param_escape
+  assign share_image = share_image | url_param_escape
+-%}
+
+<style>
+  .share-buttons--list {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .share-buttons--title {
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    color: rgb(var(--color-link));
+    margin-left: 0;
+    padding-left: 0;
+    min-height: 4.4rem;
+  }
+
+  .share-buttons--list {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .share-buttons .share-buttons--button svg {
+    width: 4rem;
+    height: 4rem;
+  }
+</style>
+
+<div class="share-buttons">
+  <h3>Share on:</h3>
+  <div class="share-buttons--list">
+    <a
+      class="share-buttons--button share-buttons--facebook"
+      target="_blank"
+      href="//www.facebook.com/sharer.php?u={{ share_link }}"
+    >
+      {%- render 'custom-social-icons', id: 'facebook' -%}
+      <span class="visually-hidden">{{ 'general.social.alt_text.share_on_facebook' | t }}</span>
+    </a>
+
+    <a
+      class="share-buttons--button share-buttons--twitter"
+      target="_blank"
+      href="//twitter.com/share?url={{ share_link }}"
+    >
+      {%- render 'custom-social-icons', id: 'twitter' -%}
+      <span class="visually-hidden">{{ 'general.social.alt_text.share_on_twitter' | t }}</span>
+    </a>
+    <a
+      class="share-buttons--button share-buttons--linkedin"
+      target="_blank"
+      href="//www.linkedin.com/shareArticle?mini=true&url={{ share_link }}&title={{ share_title }}"
+    >
+      {%- render 'custom-social-icons', id: 'linkedin' -%}
+      <span class="visually-hidden">Share on Linkedin</span>
+    </a>
+
+    <a
+      class="share-buttons--button share-buttons--pinterest"
+      target="_blank"
+      {% if share_image != null %}
+        href="//pinterest.com/pin/create/button/?url={{ share_link }}&amp;media={{ share_image }}&amp;description={{ share_title }}"
+      {% else %}
+        href="//pinterest.com/pin/create/button/?url={{ share_link }}&amp;description={{ share_title }}"
+      {% endif %}
+    >
+      {%- render 'custom-social-icons', id: 'pinterest' -%}
+      <span class="visually-hidden">{{ 'general.social.alt_text.share_on_pinterest' | t }}</span>
+    </a>
+
+    <a
+      class="share-buttons--button share-buttons--email"
+      target="_blank"
+      href="mailto:?subject=I'd like to share a link with you&amp;body={{ share_link }}"
+    >
+      {%- render 'custom-social-icons', id: 'email' -%}
+      <span class="visually-hidden">Share on email</span>
+    </a>
+
+    <a
+      class="share-buttons--button share-buttons--tumblr"
+      target="_blank"
+      href="https://www.tumblr.com/widgets/share/tool?posttype=link&amp;title=I&#x27;d%20like%20to%20share%20with%20you&amp;caption=I&#x27;d%20like%20to%20share%20with%20you&amp;content=http%3A%2F%2Fsharingbuttons.io&amp;canonicalUrl={{ share_link }}&amp;shareSource=tumblr_share_button"
+      target="_blank"
+      rel="noopener"
+      aria-label="Share on Tumblr"
+    >
+      {%- render 'custom-social-icons', id: 'tumblr' -%}
+      <span class="visually-hidden">Share on Tumblr</span>
+    </a>
+
+    <a
+      class="share-buttons--button share-buttons--whatsapp"
+      target="_blank"
+      href="whatsapp://send?text=I&#x27;d%20like%20to%20share%20with%20you%20http%3A%2F%2F"
+      target="_blank"
+      rel="noopener"
+      aria-label="Share on WhatsApp"
+    >
+      {%- render 'custom-social-icons', id: 'whatsapp' -%}
+      <span class="visually-hidden">Share on WhatsApp</span>
+    </a>
+  </div>
+</div>
