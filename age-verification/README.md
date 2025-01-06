@@ -5,11 +5,7 @@
 ### Description:
 
     - A snippet which renders a popup modal for age verification.
-    - Hide modal by adding a value to
-
-    ```
-    sessionStorage.getItem('age-verification') === 'true'
-    ```
+    - Hide modal by adding a value to sessionStorage.getItem('age-verification') === 'true'
     - Modal will be closed when users click 'Yes', users will be redirected to homepage when clicking 'No'
 
 ## Installation
