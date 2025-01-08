@@ -14,4 +14,6 @@ Copy and paste [age-verification.liquid](./snippets/age-verification.liquid/) in
 
 ## Usage
 
+```liquid
 {% render 'age-verification' %}
+```
