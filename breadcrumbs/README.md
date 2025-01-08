@@ -1,4 +1,4 @@
-# Shopify Dawn Theme Extension - Age Verification
+# Shopify Dawn Theme Extension - Breadcrumbs
 
 ![Breadcrumbs](./assets/breadcrumbs.png)
 
