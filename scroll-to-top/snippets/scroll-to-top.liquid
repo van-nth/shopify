@@ -1,0 +1,99 @@
+{%- style -%}
+  .custom_scroll-progress-bar {
+    position: fixed;
+    right: 2rem;
+    bottom: 2rem;
+    margin: 1rem auto;
+    width: 4.4rem;
+    height: 4.4rem;
+    z-index: 999;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 200ms linear;
+    box-shadow: inset 0 0 0 2px rgba(255, 255, 255, 0.2);
+  }
+
+  .custom_scroll-progress-bar.active {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .custom_scroll-progress-bar .arrow {
+    stroke-width: 3;
+    transform: rotate(90deg) scale(0.5);
+  }
+
+  .custom_scroll-progress-bar svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .progress-bar-background {
+    fill: none;
+    stroke: #444;
+    stroke-width: 5;
+  }
+
+  .progress-bar-fill {
+    fill: none;
+    stroke: #ffaf61;
+    stroke-width: 5;
+    transition: stroke-dasharray 0.3s ease;
+  }
+{%- endstyle -%}
+
+<div class="custom_scroll-progress-bar" id="custom_scroll-progress-bar">
+  <svg viewBox="0 0 24 24" stroke="currentColor" class="arrow">
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      d="M12 19.5v-15m0 0l-6.75 6.75M12 4.5l6.75 6.75"
+    />
+  </svg>
+  <svg viewBox="0 0 100 100">
+    <circle class="progress-bar-background" cx="50" cy="50" r="45" />
+    <circle class="progress-bar-fill" cx="50" cy="50" r="45" />
+  </svg>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    //add back-to-top progress bar on scroll
+    const scrollProgressBar = document.getElementById('custom_scroll-progress-bar');
+    const circle = scrollProgressBar.querySelector('.progress-bar-fill');
+    const circumference = 2 * Math.PI * 45;
+    circle.style.strokeDasharray = `0 ${circumference}`;
+
+    function updateProgress() {
+      const { innerHeight, scrollY } = window;
+      const { clientHeight } = document.body;
+      const height = clientHeight - innerHeight;
+      const percentage = (scrollY / height) * 100;
+      const dashArray = `${circumference * (percentage / 100)} ${circumference}`;
+
+      if (scrollY > 0) {
+        scrollProgressBar.classList.add('active');
+      } else {
+        scrollProgressBar.classList.remove('active');
+      }
+
+      circle.style.strokeDasharray = dashArray;
+    }
+
+    updateProgress(); // init
+    window.addEventListener('scroll', updateProgress);
+
+    scrollProgressBar.addEventListener('click', () => {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    });
+
+    document.body.appendChild(scrollProgressBar);
+  });
+</script>

@@ -1,6 +1,5 @@
 # Shopify Dawn Theme Extensions
 
-- [Announcement Bar](./announcement-bar/)
 - [Marquee Banner](./marquee-banner/)
 - [Video Carousel](./video-carousel/)
 - [Product Grid List View](./product-grid-list-view/)
@@ -8,3 +7,5 @@
 - [Age Verification](./age-verification/)
 - [Share Icons](./share-icons/)
 - [Custom Header Drawer](./custom-header-drawer/)
+- [Breadcrumbs](./breadcrumbs/)
+- [Scroll To Top](./scroll-to-top/)
