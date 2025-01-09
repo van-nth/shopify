@@ -12,6 +12,31 @@ Copy and paste [breadcrumbs.liquid](./snippets/breadcrumbs.liquid/) into `snippe
 
 ## Usage
 
+1. Open `layout/theme.liquid`
+
+2. Find this code below:
+
 ```liquid
-{% render 'breadcrumbs' %}
+<main
+  id="MainContent"
+  class="content-for-layout focus-none"
+  role="main"
+  tabindex="-1"
+>
+  {{ content_for_layout }}
+</main>
+```
+
+3. Replace the code above by this:
+
+```liquid
+<main
+  id="MainContent"
+  class="content-for-layout focus-none"
+  role="main"
+  tabindex="-1"
+>
+  {% render 'custom-breadcrumbs' %}
+  {{ content_for_layout }}
+</main>
 ```
