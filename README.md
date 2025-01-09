@@ -9,3 +9,4 @@
 - [Custom Header Drawer](./custom-header-drawer/)
 - [Breadcrumbs](./breadcrumbs/)
 - [Scroll To Top](./scroll-to-top/)
+- [Product Extra Notes](./product-extra-notes/)
