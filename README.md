@@ -2,6 +2,7 @@
 
 - [Marquee Banner](./marquee-banner/)
 - [Video Carousel](./video-carousel/)
+- [Comparison Slider](./comparison-slider/)
 - [Product Grid List View](./product-grid-list-view/)
 - [Product Tabs](./product-tabs/)
 - [Age Verification](./age-verification/)

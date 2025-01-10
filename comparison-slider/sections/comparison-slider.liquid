@@ -1,0 +1,471 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  .content-container {
+    text-align: {{ section.settings.desktop_content_alignment }};
+  }
+
+  .comparision__content__buttons {
+    display: flex;
+    width: 100%;
+    justify-content: {{ section.settings.desktop_content_alignment }};
+    gap: 1rem;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  .comparision__content__buttons .button {
+    padding: 0 1rem;
+  }
+
+  .section-{{ section.id }} .comparison-slider__media::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    background: #000000;
+    opacity: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+  }
+
+  .slider-container {
+    --position: 50%;
+
+    position: relative;
+    height: 500px;
+    width: 100%;
+    overflow: hidden;
+    background: #fff;
+    border: 7px solid #fff;
+    box-shadow: 0px 0px 15px rgba(0,0,0,0.15);
+  }
+
+  .slider-container .images{
+    height: 100%;
+    width: 100%;
+    display: flex;
+  }
+
+  .slider-container .images img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: left;
+  }
+  .slider-container .images  .before_image {
+    position: absolute;
+    inset: 0;
+    width: var(--position);
+  }
+  .slider-container .slider{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+  }
+  .slider-container .slider  .drag-line {
+    left: var(--position);
+  }
+  .slider-container .slider input{
+    width: 100%;
+    outline: none;
+    background: none;
+    -webkit-appearance: none;
+  }
+  .slider input::-webkit-slider-thumb{
+    height: 486px;
+    width: 3px;
+    background: none;
+    -webkit-appearance: none;
+    cursor: col-resize;
+  }
+  .slider .drag-line{
+    width: 3px;
+    height: 486px;
+    position: absolute;
+    left: 49.85%;
+    pointer-events: none;
+  }
+  .slider .drag-line::before,
+  .slider .drag-line::after{
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 222px;
+    background: #fff;
+  }
+  .slider .drag-line::before{
+    top: 0;
+  }
+  .slider .drag-line::after{
+    bottom: 0;
+  }
+  .slider .drag-line span{
+    height: 42px;
+    width: 42px;
+    border: 3px solid #fff;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .slider .drag-line span::before,
+  .slider .drag-line span::after{
+    position: absolute;
+    content: "";
+    top: 50%;
+    border: 10px solid transparent;
+    border-bottom-width: 0px;
+    border-right-width: 0px;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+  .slider .drag-line span::before{
+    left: 40%;
+    border-left-color: #fff;
+  }
+  .slider .drag-line span::after{
+    left: 60%;
+    border-top-color: #fff;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  @media screen and (min-width: 900px) {
+    .vst-comparison-slider {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .slider-container {
+      width: 100%;
+    }
+
+    .comparison-slider-text_first {
+      flex-direction: row-reverse;
+    }
+  }
+{%- endstyle -%}
+
+{%- liquid
+  assign fetch_priority = 'auto'
+  if section.index == 1
+    assign fetch_priority = 'high'
+  endif
+-%}
+
+<div class="section-{{ section.id }} section-{{ section.id }}-padding gradient color-{{ section.settings.section_color_scheme }}">
+  <div class="page-width comparison-slider comparison-slider-{{ section.settings.layout }}">
+    <div class="slider-container">
+      <div class="images">
+        {%- if section.settings.before_image != blank -%}
+          {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+          {%- capture sizes -%}
+            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+          {%- endcapture -%}
+          {{
+            section.settings.before_image
+            | image_url: width: 1500
+            | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority, class: 'before_image'
+          }}
+        {%- else -%}
+          {{ 'hero-apparel-2' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+        {%- if section.settings.after_image != blank -%}
+          {%- assign widths = '165, 360, 535, 750, 1070, 1500' -%}
+          {%- capture sizes -%}
+            (min-width: {{ settings.page_width }}px) {{ settings.page_width | minus: 100 | divided_by: 2 }}px,
+            (min-width: 750px) calc((100vw - 130px) / 2), calc((100vw - 50px) / 2)
+          {%- endcapture -%}
+          {{
+            section.settings.after_image
+            | image_url: width: 1500
+            | image_tag: sizes: sizes, widths: widths, fetchpriority: fetch_priority, class: 'after_image'
+          }}
+        {%- else -%}
+          {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+      </div>
+      {%- if section.settings.before_image != blank and section.settings.after_image != blank -%}
+        <div class="slider">
+          <div class="drag-line">
+            <span></span>
+          </div>
+          <input type="range" min="0" max="100" value="50">
+        </div>
+      {%- endif -%}
+    </div>
+    <div class="comparision__content">
+      <div class="content-container content-container--full-width-mobile content-layout-{{ section.settings.desktop_content_alignment }}">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'heading' -%}
+              <h2
+                class="comparision__content__heading inline-richtext {{ block.settings.heading_size }}"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.heading }}
+              </h2>
+            {%- when 'text' -%}
+              <div
+                class="comparision__content__text rte {{ block.settings.text_style }}"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.text }}
+              </div>
+            {%- when 'buttons' -%}
+              <div
+                class="comparision__content__buttons{% if block.settings.button_label_1 != blank and block.settings.button_label_2 != blank %} buttons--multiple{% endif %}"
+                {{ block.shopify_attributes }}
+              >
+                {%- if block.settings.button_label_1 != blank -%}
+                  <a
+                    {% if block.settings.button_link_1 == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link_1 }}"
+                    {% endif %}
+                    class="button{% if block.settings.button_style_secondary_1 %} button--secondary{% else %} button--primary{% endif %}"
+                  >
+                    {{- block.settings.button_label_1 | escape -}}
+                  </a>
+                {%- endif -%}
+                {%- if block.settings.button_label_2 != blank -%}
+                  <a
+                    {% if block.settings.button_link_2 == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link_2 }}"
+                    {% endif %}
+                    class="button{% if block.settings.button_style_secondary_2 %} button--secondary{% else %} button--primary{% endif %}"
+                  >
+                    {{- block.settings.button_label_2 | escape -}}
+                  </a>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% javascript %}
+  const container = document.querySelector('.slider-container');
+  const slider = container.querySelector('.slider input');
+  slider.addEventListener('input', () => {
+    container.style.cssText = '--position: ' + slider.value + '%';
+  });
+{% endjavascript %}
+
+{% schema %}
+{
+  "name": "Comparison slider",
+  "max_blocks": 3,
+  "class": "comparison-slider-section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "before_image",
+      "label": "Before image"
+    },
+    {
+      "type": "image_picker",
+      "id": "after_image",
+      "label": "After image"
+    },
+    {
+      "type": "range",
+      "id": "image_overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 10,
+      "unit": "%",
+      "label": "Image overlay",
+      "default": 0
+    },
+    {
+      "type": "select",
+      "id": "desktop_content_alignment",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Desktop content alignment"
+    },
+    {
+      "type": "color_scheme",
+      "id": "section_color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "See the difference",
+          "label": "Heading"
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "options": [
+            {
+              "value": "h2",
+              "label": "t:sections.all.heading_size.options__1.label"
+            },
+            {
+              "value": "h1",
+              "label": "t:sections.all.heading_size.options__2.label"
+            },
+            {
+              "value": "h0",
+              "label": "t:sections.all.heading_size.options__3.label"
+            }
+          ],
+          "default": "h1",
+          "label": "t:sections.all.heading_size.label"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "default": "<p>Before and after</p>",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "text_style",
+          "options": [
+            {
+              "value": "body",
+              "label": "Body"
+            },
+            {
+              "value": "subtitle",
+              "label": "subtitle"
+            }
+          ],
+          "default": "body",
+          "label": "Text style"
+        }
+      ]
+    },
+    {
+      "type": "buttons",
+      "name": "Buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_label_1",
+          "default": "Button label",
+          "label": "Button label 1",
+          "info": "Button label 1"
+        },
+        {
+          "type": "url",
+          "id": "button_link_1",
+          "label": "Button link 1"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_1",
+          "default": false,
+          "label": "Style this as a secondary button"
+        },
+        {
+          "type": "text",
+          "id": "button_label_2",
+          "default": "Button label",
+          "label": "Button label 2",
+          "info": "Button label 2"
+        },
+        {
+          "type": "url",
+          "id": "button_link_2",
+          "label": "Button link 2"
+        },
+        {
+          "type": "checkbox",
+          "id": "button_style_secondary_2",
+          "default": false,
+          "label": "Style this as a secondary button"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Comparison slider",
+      "blocks": [
+        {
+          "type": "heading"
+        },
+        {
+          "type": "text"
+        },
+        {
+          "type": "buttons"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
